@@ -1,6 +1,6 @@
 {
   "name": "@nodepls/node-graph-explorer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An interactive force-directed graph and file explorer for React.",
   "license": "MIT",
   "repository": {
@@ -12,7 +12,9 @@
     "url": "https://github.com/FP2003/nodepls/issues"
   },
   "type": "module",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -24,7 +26,10 @@
     },
     "./styles.css": "./dist/styles.css"
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "vite --config demo/vite.config.ts",
