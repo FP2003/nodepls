@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "description": "An interactive force-directed graph and file explorer for React.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FP2003/nodepls.git"
+  },
+  "homepage": "https://github.com/FP2003/nodepls#readme",
+  "bugs": {
+    "url": "https://github.com/FP2003/nodepls/issues"
+  },
   "type": "module",
   "sideEffects": ["**/*.css"],
   "main": "./dist/index.cjs",
