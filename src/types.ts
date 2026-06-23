@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ErrorInfo } from 'react';
 
 export interface NodeData {
   id: string;
@@ -54,4 +54,5 @@ export interface NodeGraphExplorerProps {
   onThemeChange?: (theme: ExplorerTheme) => void;
   onEdgeCreate?: (edge: EdgeData) => void;
   onEdgeDelete?: (edgeId: string) => void;
+  onError?: (error: Error, info: ErrorInfo) => void;
 }

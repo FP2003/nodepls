@@ -10,6 +10,7 @@ import { GraphView } from './GraphView/GraphView';
 import { FileExplorerView } from './FileExplorerView/FileExplorerView';
 import { NodePopoverContent } from './NodePopover';
 import { RelationshipEditor } from './RelationshipEditor';
+import { ErrorBoundary } from './ErrorBoundary';
 
 const defaultRelationships: RelationshipConfig = {
   references: { color: 'var(--nge-accent-teal)', directional: true },
@@ -30,15 +31,17 @@ export function NodeGraphExplorer(props: NodeGraphExplorerProps) {
   const height = typeof props.height === 'number' ? props.height : 600;
   const value = useMemo(() => ({ data: props.data, selectedNodeId, setSelectedNodeId, selectedNode: props.data.nodes.find((node) => node.id === selectedNodeId), selectedEdgeId, setSelectedEdgeId, viewMode, setViewMode, theme, resolvedTheme, setTheme, relationshipConfig, nodeTypeColors: props.nodeTypeColors ?? {}, onEdgeCreate: props.onEdgeCreate, onEdgeDelete: props.onEdgeDelete }), [props.data, props.nodeTypeColors, props.onEdgeCreate, props.onEdgeDelete, selectedNodeId, selectedEdgeId, viewMode, theme, resolvedTheme, relationshipConfig, setSelectedNodeId, setViewMode, setTheme]);
   const sizeStyle = { width: props.width ?? '100%', height: props.height ?? 600, ...props.style };
-  return <ExplorerProvider value={value}>
-    <Popover.Root open={Boolean(selectedNodeId)} onOpenChange={(open) => { if (!open) setSelectedNodeId(null); }}>
-      <section className={`nge-root ${props.className ?? ''}`} data-theme={resolvedTheme} style={sizeStyle}>
-        <Toolbar />
-        {errors.length > 0 && <div className="nge-validation" role="alert"><strong>Invalid graph data</strong><ul>{errors.map((error) => <li key={error}>{error}</li>)}</ul></div>}
-        <main className="nge-content">{viewMode === 'graph' ? <GraphView width={width} height={Math.max(300, height - 64)} /> : <FileExplorerView />}</main>
-        <RelationshipEditor />
-      </section>
-      <NodePopoverContent />
-    </Popover.Root>
-  </ExplorerProvider>;
+  return <ErrorBoundary onError={props.onError}>
+    <ExplorerProvider value={value}>
+      <Popover.Root open={Boolean(selectedNodeId)} onOpenChange={(open) => { if (!open) setSelectedNodeId(null); }}>
+        <section className={`nge-root ${props.className ?? ''}`} data-theme={resolvedTheme} style={sizeStyle}>
+          <Toolbar />
+          {errors.length > 0 && <div className="nge-validation" role="alert"><strong>Invalid graph data</strong><ul>{errors.map((error, i) => <li key={i}>{error}</li>)}</ul></div>}
+          <main className="nge-content">{viewMode === 'graph' ? <GraphView width={width} height={Math.max(300, height - 64)} /> : <FileExplorerView />}</main>
+          <RelationshipEditor />
+        </section>
+        <NodePopoverContent />
+      </Popover.Root>
+    </ExplorerProvider>
+  </ErrorBoundary>;
 }
