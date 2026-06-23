@@ -51,7 +51,8 @@
     "test:coverage": "vitest run --coverage",
     "check": "npm run lint && npm run test && npm run build",
     "pack:check": "npm pack --dry-run",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "release": "npm run build && changeset publish"
   },
   "peerDependencies": {
     "react": ">=18",
