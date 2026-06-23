@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useExplorer } from '../state/ExplorerContext';
 import type { EdgeData } from '../types';
 
@@ -14,7 +14,18 @@ export function RelationshipEditor() {
   const types = useMemo(() => Object.keys(relationshipConfig), [relationshipConfig]);
   const [type, setType] = useState(types[0] ?? 'references');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (source && !data.nodes.some((n) => n.id === source)) setSource(data.nodes[0]?.id ?? '');
+  }, [data.nodes, source]);
+
+  useEffect(() => {
+    if (target && !data.nodes.some((n) => n.id === target)) setTarget(data.nodes[1]?.id ?? data.nodes[0]?.id ?? '');
+  }, [data.nodes, target]);
+
   if (!onEdgeCreate) return null;
+  if (data.nodes.length === 0) return null;
+
   const submit = () => {
     if (!data.nodes.some((node) => node.id === source) || !data.nodes.some((node) => node.id === target)) return setError('Choose valid source and target nodes.');
     const relation = type.trim();
